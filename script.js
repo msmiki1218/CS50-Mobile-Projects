@@ -18,22 +18,23 @@ function newTodo() {
     showNote.innerHTML = note;
   } else {
     createCheck(item);
-    addItemCount(); 
-    addUncheckedCount();   
+    addItemCount();
+    addUncheckedCount();
   }
 }
 
-let itemID = 0;
 
 function createCheck(item) {
   if (item !== '') {
     let node = document.createElement("li");
-    node.className = 'todo-text'; 
+    node.className = 'todo-text';
 
     var chk = document.createElement('input');  // CREATE CHECK BOX.
     chk.setAttribute('type', 'checkbox');       // SPECIFY THE TYPE OF ELEMENT.
     chk.setAttribute('class', 'todo-checkbox');
+    chk.setAttribute('name', 'itemBox');
     chk.setAttribute('id', item);
+    chk.setAttribute('value', item);
 
     var lbl = document.createElement('label');  // CREATE LABEL.
     lbl.setAttribute('for', item);
@@ -46,21 +47,16 @@ function createCheck(item) {
     node.appendChild(lbl);
 
     list.appendChild(node);
+
   }
 }
 
 function doneTodo() {
-  //  get all the checkboxes
-  let items = document.querySelectorAll('.todo-checkbox');
-
-  // check each checkbox
-  for (let item of items) {
-    
-    // update unchecked count if box is checked
-    if (item.checked) {
-      subtractUncheckedCount();
+  list.addEventListener('click', function (ev) {
+    if (ev.target.tagName === 'li') {
+      ev.target.classList.toggle('checked');
     }
-  }
+  })
 }
 
 function addItemCount() {
@@ -77,7 +73,7 @@ function addUncheckedCount() {
 
 function subtractUncheckedCount() {
   let count = Number(uncheckedCountSpan.innerHTML);
-  count -= 1;
+  count = count - 1;
   uncheckedCountSpan.innerHTML = count;
 }
 
